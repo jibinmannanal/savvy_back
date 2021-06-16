@@ -17,9 +17,9 @@ class Api::V1::SessionsController  < ApplicationController
 
      user = User.find_by(email: params[:email])
     if user && user.authenticate(params[:password])
-        
+
       auth_token = encode_token({user_id: user.id})
-      render json: {auth_token: auth_token}, status: :ok
+      render json: {auth_token: auth_token,user:user}, status: :ok
     else
       render json: {error: 'Login Unsuccessfull'}, status: :unauthorized
     end

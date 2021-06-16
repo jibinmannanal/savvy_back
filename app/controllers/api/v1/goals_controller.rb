@@ -16,11 +16,15 @@ class Api::V1::GoalsController < ApplicationController
   def update
     goal = @user.goals.where(id:params[:id])&.first
     if goal.present?
-       goal.update(name:params[:name])
+       if goal.update(name:params[:name])
        render json: { message: 'Goal updated successfully' },
               status: :created
+      else
+        render json: { errors: goal.errors.full_messages },
+               status: :bad_request
+      end
     else
-      render json: {status: 'Goal not found', code: 422}
+      render json: {errors: 'Goal not found', code: 422}
 
     end
   end
